@@ -1,0 +1,65 @@
+---
+title: "CodeBook for Getting and Cleaning Data Course Project"
+author: "Vern"
+date: "1/19/2020"
+output:
+  html_document:
+    keep_md: yes
+---
+
+
+The run_analysis.R script downloads the dataset and performs the data preparation and output as required in the assignment steps, detailed below.
+
+0. Download and extract the data. Not part of the assignment, but helpful to have here anyway.
+   * Check to see if the "data.table" package is installed, since this script relies on it.
+   * Check to see if the "plyr" package is installed, since this script relies on it.
+   * Check to see if the "dplyr" package is installed, since this script relies on it.
+   * Check to see if a subdirectory exists for this project. If not, create it.
+   * Define the zip file name on the UCI server.
+   * Define the destination filename. Does not match the above filename from UCI.
+   * Define the full path for the zip file.
+   * Download the zip file from the UCI repository, and save it to the project subdirectory.
+   * Define the directory for where the top level extracted files should go.
+   * Define the directory where the extracted project files will be automatically placed. The folder in the zipped file is already named "UCI HAR Dataset".
+   * Unzip the file, if it doesn't already exist.
+
+1. Merges the training and the test sets to create one data set.
+   a. Column labels for use later
+      * Reads the Feature Names into the variable 'featureNames'. There are 561 features. File is "features.txt".
+      * Show the duplicated column names, which need to be corrected.
+      * Adding a 3rd column with a combination of featurename and index, since there are 42 triplicate column names in this dataset.
+      *   Duplicated columns names won't work with dplyr select for column names, which is needed later on.
+      *   This extra information will be removed towards the end of this process, and the separater/delimiter will be used in that process.
+      * Reads the Activities into the variable 'activityLabels'. There are 6 activity labels. File is "activity_labels.txt".
+   b. Test Data
+      * Read the Test data into tables. Files are: 'X_test.txt', 'y_test.txt', 'subject_test.txt', in the 'test' folder.
+      * Rename the columns in the test_feature_data table with the feature names from the 'newname' column in the featureNames table, and transform that column into 561 columns, so that they match up correctly.
+      * Add a source column so that I can keep track of where the data came from: test vs train. This step is not required for this project.
+      * Rename the single column in each of the tables for activity and subject.
+      * Merge (by columns) all 3 tables for Test. All tables have the same number of observations (10299).
+   c. Train Data
+      * Read the Train data into tables. Files are: 'X_train.txt', 'y_train.txt', 'subject_train.txt', in the 'train' folder.
+      * Rename the columns in the test_feature_data table with the feature names from the 'newname' column in the featureNames table, and transform that column into 561 columns, so that they match up correctly.
+      * Add a source column so that I can keep track of where the data came from: test vs train. This step is not required for this project.
+      * Rename the single column in each of the tables for activity and subject.
+      * Merge (by columns) all 3 tables for Train. All tables have the same number of observations (10299).
+   d. Merged Data
+      * Merge (by Rows) the Test data and the Train data.
+2. Extracts only the measurements on the mean and standard deviation for each measurement.
+   * tidy_data is created by subsetting only the following columns from the Merged Data table: datasource, subject, activity, contains("mean"), contains("std")
+   * This new table contains 89 features and 10299 observations.
+3. Uses descriptive activity names to name the activities in the data set
+   * Update the Activity field to be character type, to be able to hold the descriptive name. Originally numeric, which can't hold string data.
+   * Update the Activity field to be descriptive names, looking up the names in the activityLabels table.
+4. Appropriately labels the data set with descriptive variable names.
+   * Make all column names lowercase.
+   * Get rid of the field index number which was added towards the top of this script to help differentiate the column names.
+   * Rename the abbreviations in the field names with their longer equivalents
+   * Get rid of parentheses and commas
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+   * Drop the 'datasource' column, since it's not needed in the final output
+   * Aggregate the data into a new, final table.
+   * Reorder the subject & activity columns
+   * Define the final table filename
+   * Define the full path for the zip file.
+   * Save the file.
