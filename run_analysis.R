@@ -230,3 +230,12 @@ finaltabledestfilepathfull = file.path("./courseprojectdata", finaltabledestfile
 
 # Write the file.
 write.table(final_tidy_data, file=file.path(finaltabledestfilepathfull), row.names = FALSE, quote = FALSE)
+
+
+
+
+# 6. Produce Readme and CodeBook
+
+rmarkdown::render("CodeBook.rmd")
+rmarkdown::render("README.rmd")
+
