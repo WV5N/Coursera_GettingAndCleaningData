@@ -452,7 +452,7 @@ The run_analysis.R script downloads the dataset and performs the data preparatio
    * Save the file.
    
    * The column names at this point:
-    
+
  [1] "activity"                                              "subject"                                              
  [3] "timebodyaccelerometer-mean-x"                          "timebodyaccelerometer-mean-y"                         
  [5] "timebodyaccelerometer-mean-z"                          "timegravityaccelerometer-mean-x"                      
